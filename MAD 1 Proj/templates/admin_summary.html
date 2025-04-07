@@ -1,0 +1,16 @@
+{% extends 'navbar.html' %}
+{% block title %}Summary{% endblock %}
+{% block name %}
+
+<div class="container mt-4">
+    {% if scores %}
+        <img src="{{ url_for('static', filename='quiz_attendance.png') }}" alt="Quiz Attendance">
+    {% endif %}
+    {% if subject %}
+        <img src="{{ url_for('static', filename='subject_quiz_distribution.png') }}" alt="Subject Quiz Distribution">
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

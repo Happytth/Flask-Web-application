@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Chapters</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffcc00 !important;
+            transform: scale(1.1);
+        }
+        .btn-add {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('profile') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_admin==True %}
+                            <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+                        {% else %}
+                            <a class="nav-link" href="{{ url_for('user_dashboard') }}">Dashboard</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin_summary">Summary</a>
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_admin %}
+                            <a class="nav-link" href="/quiz">Quiz</a>
+                        {% else %}
+                            <a class="nav-link" href="#">Scores</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+    <h1 class="text-center my-4">Chapters in <span class="text-muted">{{ subject.name }}</span></h1>
+    <div class="container mt-4">
+        <button class="btn btn-info btn-add" data-bs-toggle="modal" data-bs-target="#chapterModal">+ Add Chapter</button>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Chapter Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chapter in subject.chapter %}
+                <tr>
+                    <td>{{ chapter.id }}</td>
+                    <td>{{ chapter.name }}</td>
+                    <td>{{ chapter.description }}</td>
+                    <td>
+                        <a href="{{ url_for('chapter_edit', chapter_id=chapter.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ url_for('chap_del', id=chapter.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this chapter?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="chapterModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Chapter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url_for('chapter', subject_id=subject.id) }}">
+                        <input type="hidden" name="subject_id" value="{{ subject.id }}"> 
+                        <div class="mb-3">
+                            <label for="chapterName" class="form-label">Chapter Name</label>
+                            <input type="text" class="form-control" id="chapterName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="chapterDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="chapterDescription" name="chapter_description" rows="3"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

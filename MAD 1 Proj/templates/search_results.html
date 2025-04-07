@@ -1,0 +1,49 @@
+{% extends 'navbar.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block name %}
+<div class="container mt-4">
+    <h2>Search Results for "{{ query }}"</h2>
+
+    <!-- Subjects Section -->
+    {% if subjects %}
+        <h4 class="mt-4">Subjects</h4>
+        <ul class="list-group">
+            {% for subject in subjects %}
+                <li class="list-group-item">
+                    {{ subject.name }} - {{ subject.description }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Quizzes Section -->
+    {% if quizzes %}
+        <h4 class="mt-4">Quizzes</h4>
+        <ul class="list-group">
+            {% for quiz in quizzes %}
+                <li class="list-group-item">
+                    {{ quiz.quiz_title }} (Date: {{ quiz.date_of_quiz.strftime('%d-%m-%Y') }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Users Section -->
+    {% if users %}
+        <h4 class="mt-4">Users</h4>
+        <ul class="list-group">
+            {% for user in users %}
+                <li class="list-group-item">
+                    {{ user.full_name }} ({{ user.username }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if not subjects and not quizzes and not users %}
+        <div class="alert alert-warning mt-4">No results found for "{{ query }}".</div>
+    {% endif %}
+</div>
+{% endblock %}

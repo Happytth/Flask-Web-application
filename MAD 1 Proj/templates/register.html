@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register HTML</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+    
+    </style>
+  </head>
+<body><br><br>
+    <h1>Hey! Welcome to Quiz Master</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div id="main">
+        <div id="canvas">
+            <div id="form-body">
+                <h3>Register Here</h3>
+                <form action="/register" method="post">
+                <div class="mb-3">
+                    <label for="Input1" class="form-label">Username(E-mail)</label>
+                    <input type="email" class="form-control" id="Input1" placeholder="Happy@gmail.com" name="username" required>
+                  </div>
+                    <div class="mb-3">
+                        <label for="Input2" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="Input2" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="Input3" class="form-label">Confirm Password</label>
+                      <input type="password" class="form-control" id="Input3" name="confirm_password" required>
+                  </div>
+              <div class="mb-3">
+                <label for="Input3" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="Input4" placeholder="Happy Hap" name="full_name" required>
+              </div>
+              <div class="mb-3">
+                <label for="Input5" class="form-label">Date of Birth</label>
+                <input type="date" class="form-control" id="Input5" name="dob" required>
+              </div>
+            <div class="text-center">
+            <input type="submit" class="btn btn-primary" value="sign in"> 
+            <br><br>Already have an account? <a href="{{ url_for('login') }}">Sign in</a>
+            </div>
+          </form>
+        </div>
+        </div>
+    </div><br>
+</body>
+</html>

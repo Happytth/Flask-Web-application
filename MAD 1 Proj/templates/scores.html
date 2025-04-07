@@ -1,0 +1,31 @@
+{% extends 'navbar.html' %}
+{% block title %}
+    Scores
+{% endblock %}
+{% block name %}
+
+<div class="container mt-4">
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Quiz ID</th>
+                <th>Total Marks</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for score in scores %}
+            <tr>
+                <td>{{ score.quiz_id }}</td>
+                <td>{{ score.total_score }}</td>
+                <td>{{ score.time_stamp.strftime('%d %B %Y') }}</td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

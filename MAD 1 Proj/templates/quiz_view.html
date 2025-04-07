@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quiz View</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="main">
+    <div id="canvas">
+        <div id="form-body" class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Quiz Details</h3>
+
+                <div class="mb-2"><strong>ID:</strong> {{ quiz.id }}</div>
+                <div class="mb-2"><strong>Subject:</strong> {{ quiz.chapter.subject.name }}</div>
+                <div class="mb-2"><strong>Chapter:</strong> {{ quiz.chapter.name }}</div>
+                <div class="mb-2"><strong>Number of Questions:</strong> {{ question_counts[quiz.id] }}</div>
+                <div class="mb-2"><strong>Scheduled Date:</strong> {{ quiz.date_of_quiz.strftime('%d/%m/%Y') }}</div>
+                <div class="mb-2"><strong>Duration:</strong> {{ quiz.time_duration.strftime('%H:%M') }}</div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('user_dashboard') }}" class="btn btn-secondary">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

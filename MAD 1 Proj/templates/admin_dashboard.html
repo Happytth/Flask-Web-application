@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background: linear-gradient(135deg, grey, black);
+            color: white;
+        }
+        .navbar a, .navbar-brand, .navbar-nav .nav-link, .navbar-text {
+            color: white !important;
+        }
+        .navbar .btn {
+            background-color: #0066FF !important; 
+            color: white !important;
+            border: 1px solid transparent;
+        }
+        .navbar .btn:hover {
+            background-color: #004BCC !important;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffcc00 !important;
+        }
+        .count-box {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s ease-in-out;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+       
+        .center-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 100px;
+      }
+        .dashboard-section {
+            margin-top: 50px;
+        }
+        .count-box {
+          background: linear-gradient(90deg, #6a11cb, #2575fc);
+          color: white;
+          padding: 30px;
+          border-radius: 15px;
+          text-align: center;
+          box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+          transition: 0.3s ease-in-out;
+          font-size: 40px;
+          margin-bottom: 10px;
+      }
+      
+      .count-box:hover {transform: scale(1.1);
+        background: linear-gradient(135deg, grey, black);
+        
+        color: white;
+      }  
+
+      .box {
+        width: 350px;
+        height: 220px;
+        background: white;
+        border-radius: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: 20px;
+        font-weight: bold;
+        color: black;
+        border: 2px solid transparent;
+        transition: 0.3s ease-in-out;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    .box:hover {
+        background: aqua;
+        color: white;
+        transform: scale(1.05);
+        border-color: white;
+    }
+  a {
+    text-decoration: none;
+}
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('profile') }}">Home</a></li>
+                    <li class="nav-item">
+                        {% if user.is_admin %}
+                            <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+                        {% else %}
+                            <a class="nav-link" href="{{ url_for('user_dashboard') }}">Dashboard</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/admin_summary">Summary</a></li>
+                    <li class="nav-item">
+                        {% if user.is_admin %}
+                            <a class="nav-link" href="/quiz">Quiz</a>
+                        {% else %}
+                            <a class="nav-link" href="#">Scores</a>
+                        {% endif %}
+                    </li>
+                </ul>
+                <form class="d-flex" action="{{ url_for('search') }}" method="GET">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Search subjects, quizzes, users" required>
+                    <button class="btn btn-dark" style="background-color: black !important; color: white !important;" type="submit">Search</button>
+
+                </form>
+                <span class="navbar-text ms-3 fw-bold">
+                    {% if user.is_admin %}
+                        Hello Admin
+                    {% else %}
+                        Welcome User
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </nav>
+   
+  <div class="container mt-5">
+    <div class="center-container">
+            <div class="col-md-6">
+                <a href="{{url_for('subject')}}" class="admin-box">
+                    <div class="box">
+                        <i class="fas fa-book fa-2x"></i>
+                        <span>Subjects</span>
+                    </div>
+                </a>
+            </div>
+            <div class="center-container">
+                <a href="/admin_user" class="admin-box">
+                    <div class="box">
+                        <i class="fas fa-poll fa-2x"></i>
+                        <span>Users</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center mt-5 fixed-bottom">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="count-box">
+                    <i class="fas fa-users"></i>
+                    <h4>Active Users</h4>
+                    <p>{{ active_users_count }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="count-box">
+                    <i class="fas fa-book"></i>
+                    <h4>Subjects</h4>
+                    <p>{{ subjects_count }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="count-box">
+                    <i class="fas fa-question-circle"></i>
+                    <h4>Quizzes</h4>
+                    <p>{{ quizzes_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
